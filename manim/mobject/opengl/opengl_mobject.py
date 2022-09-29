@@ -618,7 +618,7 @@ class OpenGLMobject:
                 parent.refresh_bounding_box()
         return self
 
-    def is_point_touching(self, point, buff=MED_SMALL_BUFF):
+    def is_point_touching(self, point, buff=MED_SMALL_BUFF):                                
         bb = self.get_bounding_box()
         mins = bb[0] - buff
         maxs = bb[2] + buff
