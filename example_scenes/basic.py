@@ -19,7 +19,7 @@ class GuassElimination(ThreeDScene):
 
     matrix = np.array([[4, -4,  -1, -10],
                        [4,  12, -5,  14],
-                       [4,  5,   6,  15]])
+                       [4,  5,   6,  -15]])
 
     def construct(self):
         self.renderer.camera.light_source.move_to(3*UP) # changes the source of the light
@@ -42,7 +42,27 @@ class GuassElimination(ThreeDScene):
             self.add(plane)
 
         # self.play(plane1.animate.apply_matrix(self.rotation_matrix_Y))
+        # axes = ThreeDAxes(x_axis_config={"color": BLUE}, y_axis_config={"color": RED}, z_axis_config={"color": GREEN})
+        # def plane1_uvfunc(u, v):
+        #     uv = (-10 - 4*u + 4*v)/-1
+        #     point = np.array([u, v, uv if uv < 0 and uv > -3 else None])
+        #     return point
+        # plane1 = OpenGLSurface(plane1_uvfunc, color=BLUE, u_range=[-3, 1], v_range=[-1, 3])
 
+        # def plane2_uvfunc(u, v):
+        #     uv = (14 - 4*u - 12*v)/-5
+        #     point = np.array([u, v, uv if uv < 0 and uv > -3 else None])
+        #     return point
+        # plane2 = OpenGLSurface(plane2_uvfunc, color=GREEN, u_range=[-3, 1], v_range=[-1, 3])
+
+        # def plane3_uvfunc(u, v):
+        #     uv = (-15 - 4*u - 5*v)/6
+        #     point = np.array([u, v, uv if uv < 0 and uv > -3 else None])
+        #     return point
+        # plane3 = OpenGLSurface(plane3_uvfunc, color=RED, u_range=[-3, 1], v_range=[-1, 3])
+
+        # self.add(axes, plane1, plane2, plane3)
+        
         self.interactive_embed()
 
 
