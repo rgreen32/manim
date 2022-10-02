@@ -1,7 +1,9 @@
 from tkinter import Scale
+from typing import Tuple
 import numpy as np
 from manim import *
 from manim.opengl import OpenGLSurface
+from manim.utils.opengl import scale_matrix
 
 
 class GuassElimination(ThreeDScene):
@@ -51,6 +53,8 @@ class GuassElimination(ThreeDScene):
         self.interactive_embed()
 
 class GuassEliminationVectors(ThreeDScene):
+
+
     matrix = np.array([[4, -4,  -1],
                        [4,  12, -5],
                        [4,  5,   6]])
@@ -67,10 +71,38 @@ class GuassEliminationVectors(ThreeDScene):
         axes = ThreeDAxes(x_axis_config={"color": BLUE}, y_axis_config={"color": RED}, z_axis_config={"color": GREEN})
         self.add(axes)
         
-        colors = (BLUE, RED, GREEN)
-        for row_index in range(self.matrix.shape[0]):
-            vector = Arrow3D(start=[0,0,0], end=self.matrix[row_index], color=colors[row_index])
-            self.matrix_row_vectors.append(vector)
-        self.add(self.matrix_row_vectors[0])
-        self.play(Scale(self.matrix_row_vectors[0], 2))
+        self.matrix_row_vectors = self._create_vector_mobjects(self.matrix)
+        self.add(*self.matrix_row_vectors)
+        
+        self.wait(2)
+
+        self._scale_matrix_row(0.25, 0)
+        # self.play(self.matrix_row_vectors[0].animate.apply_matrix(2, about_point=[0,0,0]))
+        self._pivot_matrix_row(0, 1)
         self.interactive_embed()
+
+    def _create_vector_mobjects(self, matrix):
+        vectors = []
+        colors = (BLUE, RED, GREEN)
+        for row_index in range(matrix.shape[0]):
+            vector = Arrow3D(start=[0,0,0], end=matrix[row_index], color=colors[row_index])
+            vectors.append(vector)
+        return vectors
+
+    def _scale_matrix_row(self, scale_factor, row_number):
+        self.matrix[row_number] = self.matrix[row_number] * scale_factor
+
+        scale_matrix = np.identity(3) * scale_factor 
+        self.play(self.matrix_row_vectors[row_number].animate.apply_matrix(scale_matrix))
+
+    def _pivot_matrix_row(self, base_rowcoloumn: int, target_row_number: int):
+        new_row_vector = self.matrix[target_row_number] + (-1*self.matrix[target_row_number][base_rowcoloumn])
+
+        pivot_matrix = np.identity(3)
+        pivot_matrix[0][0] = new_row_vector[0]/self.matrix[target_row_number][0]
+        pivot_matrix[1][1] = new_row_vector[1]/self.matrix[target_row_number][1]
+        pivot_matrix[2][2] = new_row_vector[2]/self.matrix[target_row_number][2]
+
+        self.matrix[target_row_number] = new_row_vector
+
+        self.play(self.matrix_row_vectors[target_row_number].animate.apply_matrix(pivot_matrix))
