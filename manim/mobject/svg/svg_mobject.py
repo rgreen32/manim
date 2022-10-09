@@ -485,7 +485,7 @@ class VMobjectFromSVGPath(VMobject, metaclass=ConvertToOpenGL):
         # TODO: cache mobject in a re-importable way
 
         self.handle_commands()
-
+        self.points[:, 2] = 20
         if config.renderer == "opengl":
             if self.should_subdivide_sharp_curves:
                 # For a healthy triangulation later
@@ -513,10 +513,7 @@ class VMobjectFromSVGPath(VMobject, metaclass=ConvertToOpenGL):
         for segment in self.path_obj:
             segment_class = segment.__class__
             func, attr_names = segment_class_to_func_map[segment_class]
-            points = [
-                _convert_point_to_3d(*segment.__getattribute__(attr_name))
-                for attr_name in attr_names
-            ]
+            points = [_convert_point_to_3d(*segment.__getattribute__(attr_name)) for attr_name in attr_names]
             func(*points)
 
         # Get rid of the side effect of trailing "Z M" commands.

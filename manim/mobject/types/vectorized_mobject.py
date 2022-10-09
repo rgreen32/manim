@@ -731,8 +731,7 @@ class VMobject(Mobject):
         nppcc = self.n_points_per_cubic_curve
         self.add_cubic_bezier_curve_to(
             *(
-                interpolate(self.get_last_point(), point, a)
-                for a in np.linspace(0, 1, nppcc)[1:]
+                interpolate(self.get_last_point(), point, a) for a in np.linspace(0, 1, nppcc)[1:]
             )
         )
         return self

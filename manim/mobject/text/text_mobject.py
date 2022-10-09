@@ -1151,6 +1151,8 @@ class MarkupText(SVGMobject):
         self.chars = self.get_group_class()(*self.submobjects)
         self.text = text_without_tabs.replace(" ", "").replace("\n", "")
 
+        # for sobject_index in range(len(self.chars)):
+        #     self.submobjects[sobject_index].points[:, 2] = 2
         if config.renderer == "opengl":
             nppc = self.n_points_per_curve
         else:
