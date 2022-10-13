@@ -1503,11 +1503,13 @@ class OpenGLVMobject(OpenGLMobject):
             vert_indices=np.zeros(0, dtype="i4"),
             shader_folder=self.fill_shader_folder,
             render_primitive=self.render_primitive,
+            depth_test=True
         )
         self.stroke_shader_wrapper = ShaderWrapper(
             vert_data=self.stroke_data,
             shader_folder=self.stroke_shader_folder,
             render_primitive=self.render_primitive,
+            depth_test=True
         )
 
     def refresh_shader_wrapper_id(self):
